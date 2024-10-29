@@ -23,6 +23,8 @@ const CustomerForm = () => {
 
             <label for="telephone">Telephone:</label>
             <input type="tel" id="telephone" name="telephone" ref={telephoneRef}></input>
+
+            <button onClick={handleSubmission}>Submit</button>
         </form>
     )
 }

@@ -4,6 +4,13 @@ const CustomerList = ({ costumerId, onCustomerSelect }) => {
     const [customers, setCustomers] = useState([]);
 
     useEffect(() => {
+        const fetchCustomers = async () =>{
+            try{
+
+            } catch (error) {
+                console.error('Error fetching products', error)
+            }
+        }
         if (customerId){
             const fetchedCustomers = [];
             setCustomers(fetchedCustomers)

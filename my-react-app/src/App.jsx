@@ -98,12 +98,12 @@ function App() {
 
       <Routes>
         <Route path="/" element={< Home />}/>
-        <Route path="/customer/:id" element={< CustomerForm selectedCustomer={selectedCustomer} onCustomerUpdated={handleCustomerUpdated}/>}/>
-        <Route path='/customer/list/' element={<CustomerList customers={customers} onEditCustomer={handleEditCustomer} onCustomerDeleted={handleCustomerDeleted}/>}/>
-        <Route path='/order/:id' element={< OrderForm selectedOrder={selectedOrder} onOrderUpdated={handleOrderUpdated}/>}/>
-        <Route path='/order/list/' element={<OrderList orders={orders} onEditOrder={handleEditOrder} onOrderDeleted={handleOrderDeleted}/>}/>
-        <Route path="/product/:id" element={<ProductForm selectedProduct={selectedProduct} onProductUpdated={handleProductUpdated}/>}/>
-        <Route path='/product/list/' element={<ProductList products={products} onEditProduct={handleEditProduct} onProductDeleted={handleProductDeleted}/>}/>
+        <Route path="/customers/:id" element={< CustomerForm selectedCustomer={selectedCustomer} onCustomerUpdated={handleCustomerUpdated}/>}/>
+        <Route path='/customers/list/' element={<CustomerList customers={customers} onEditCustomer={handleEditCustomer} onCustomerDeleted={handleCustomerDeleted}/>}/>
+        <Route path='/orders/:id' element={< OrderForm selectedOrder={selectedOrder} onOrderUpdated={handleOrderUpdated}/>}/>
+        <Route path='/orders/list/' element={<OrderList orders={orders} onEditOrder={handleEditOrder} onOrderDeleted={handleOrderDeleted}/>}/>
+        <Route path="/products/:id" element={<ProductForm selectedProduct={selectedProduct} onProductUpdated={handleProductUpdated}/>}/>
+        <Route path='/products/list/' element={<ProductList products={products} onEditProduct={handleEditProduct} onProductDeleted={handleProductDeleted}/>}/>
         <Route path='*' element={<NotFound/>}/>
       </Routes>
     </>

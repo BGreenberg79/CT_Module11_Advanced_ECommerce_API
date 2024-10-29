@@ -7,28 +7,48 @@ const ProductForm = () => {
         const productPriceRef = useRef(null);
         const [errors, setErrors] =useState ({});
 
+        const [productName, setProductName] = useState();
+        const [productType, setProductType] = useState();
+        const [productPrice, setProductPrice] = useState();
+
+        useEffect(()=> {
+            if (selectedProduct){
+                setProductName(selectedProduct.productName);
+                setProductType(selectedProduct.productType);
+                setProductPrice(selectedProduct.productPrice);
+            }
+        }, [selectedProduct]);
+
         const validateForm = () => {
             const errors ={};
-            const productName= productNameRef.current.value;
-            const productType= productTypeRef.current.value;
-            const productPrice= productPriceRef.current.value;
+            productName= productNameRef.current.value;
+            productType= productTypeRef.current.value;
+            productPrice= productPriceRef.current.value;
             if (!productName) errors.productName= 'Product Name required to add or edit product to catalogue';
             if (!productType) errors.productType ='Product Type required for catalogue';
             if (!productPrice || productPrice <= 0) errors.productPrice = 'Price must be greater than $0';
             return errors
         }
 
-        const handleSubmission = (event) =>{
+        const handleSubmission = async (event) =>{
             event.preventDefault();
             const errors= validateForm();
             if (Object.keys(errors).length == 0){
-            const productName= productNameRef.current.value;
-            const productType= productTypeRef.current.value;
-            const productPrice= productPriceRef.current.value;
-        } else{setErrors(errors);}}
+                const productData = {productName, productType, productPrice};
+            try{ 
+                if (selectedProduct) {
+                    await axios.put(`http://127.0.0.1:5000/products/${selectedProduct.id}`, productData);
+                } else
+                    {await axios.post('http://127.0.0.1:5000/products', productData);
+            } onProductUpdated();
+            setProductName('');
+            setProductPrice('');
+            setProductType('');
+        } catch(error) {console.error("Error submitting product:", error);}} else {setErrors(errors);}}
     
     return (
         <form>
+            <h2>{selectedProduct ? 'Edit' : 'New'} Product</h2>
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" ref={productNameRef}></input>
             {errors.productName && <div style={{color:"red"}}>{errors.productName}</div>}

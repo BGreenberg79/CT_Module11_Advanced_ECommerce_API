@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from 'axios';
 
 const OrderForm = () => {
@@ -9,12 +9,26 @@ const OrderForm = () => {
         const totalPriceRef=useRef(null);
         const [errors, setErrors] =useState ({});
 
+        const [customerId, setCustomerId] = useState();
+        const [orderStatus, setOrderStatus] = useState();
+        const [products, setProducts] = useState();
+        const [totalPrice, setTotalPrice] = useState();
+
+        useEffect(() => {
+            if (selectedOrder) {
+                setCustomerId(selectedOrder.customerId);
+                setOrderStatus(selectedOrder.orderStatus);
+                setProducts(selectedOrder.products);
+                setTotalPrice(selectedOrder.totalPrice);
+            }
+        }, [selectedOrder]);
+
         const validateForm = () => {
             const errors ={};
-            const customerId= customerIdRef.current.value;
-            const orderStatus= orderStatusRef.current.value;
-            const products= productsRef.current.value;
-            const totalPrice=totalPriceRef.current.value;
+            customerId= customerIdRef.current.value;
+            orderStatus= orderStatusRef.current.value;
+            products= productsRef.current.value;
+            totalPrice=totalPriceRef.current.value;
             if (!customerId) errors.customerId= 'Customer required for order';
             if (!orderStatus) errors.orderStatus ='Order Status required for order';
             if (!products) errors.products = 'Products required for order';
@@ -22,18 +36,26 @@ const OrderForm = () => {
             return errors
         }
 
-        const handleSubmission = (event) =>{
+        const handleSubmission = async (event) =>{
             event.preventDefault();
             const errors= validateForm();
             if (Object.keys(errors).length == 0){
-            const customerId= customerIdRef.current.value;
-            const orderStatus= orderStatusRef.current.value;
-            const products= productsRef.current.value;
-            const totalPrice=totalPriceRef.current.value;}
-            else{setErrors(errors);}
-        };
+            const orderData = {customerId, orderStatus, products, totalPrice};
+            try{
+                if (selectedOrder) {
+                    await axios.put(`http://127.0.0.1:5000/orders/${selectedOrder.id}`, orderData);
+                } else
+                    {await axios.post('http://127.0.0.1:5000/orders', orderData);
+            } onOrderUpdated();
+            setCustomerId('');
+            setOrderStatus('');
+            setProducts('');
+            setTotalPrice('');
+            } catch(error) {console.error("Error submitting order:", error);}} else {setErrors(errors);}}
+
     return (
         <form>
+            <h2>{selectedOrder ? 'Edit' : 'New'} Order</h2>
             <label for="customer_id">Customer ID:</label>
             <input type="int" id="customer_id" name="customer_id" ref={customerIdRef}></input> 
             {errors.customerId && <div style={{color:"red"}}>{errors.customerId}</div>}
@@ -51,12 +73,6 @@ const OrderForm = () => {
             {errors.totalPrice && <div style={{color:"red"}}>{errors.totalPrice}</div>}
 
             <button onClick={handleSubmission}>Submit</button>
-
-            {/* customer_id = fields.Int(required=True)
-    date = fields.Date(required=True)
-    order_status = fields.Str(required=True)
-    products = fields.List(fields.Nested(ProductSchema))
-    total_price = fields.Float(required=True, validate=validate.Range(min=0)) */}
 
         </form>
     )

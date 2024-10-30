@@ -1,20 +1,20 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import {Container} from 'react-bootstrap/Container';
-import {Row} from 'react-bootstrap/Row';
-import {Col} from 'react-bootstrap/Col';
-import {ListGroup} from 'react-bootstrap/ListGroup'
-import {Button} from 'react-bootstrap/Button'
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import ListGroup from 'react-bootstrap/ListGroup'
+import Button from 'react-bootstrap/Button'
 
 
-const CustomerList = ({ customers, customerId, onEditCustomer, onCustomerDeleted }) => {
-    const [customers, setCustomers] = useState([]);
+const CustomerList = ({customerId, onEditCustomer, onCustomerDeleted }) => {
+    const [customersList, setCustomersList] = useState([]);
 
     useEffect(() => {
         const fetchCustomers = async () =>{
             try{
                 const response = await axios.get('http://127.0.01:5000/customers');
-                setCustomers(response.data)
+                setCustomersList(response.data)
             } catch (error) {
                 console.error('Error fetching customers', error)
             }
@@ -41,7 +41,7 @@ const CustomerList = ({ customers, customerId, onEditCustomer, onCustomerDeleted
                     </Col>
                 </Row>
                 <ListGroup>
-                    {customers.map(customer => (
+                    {customersList.map(customer => (
                         <ListGroup.Item variant='info' key={customer.id}>Customer ID: {customer.id}, Customer Name:{customer.name} Customer Email: {customer.email}, Telephone: {customer.telephone}
                         <Button variant='warning' className='shadow-sm m-1 p-1' onClick={onEditCustomer(customer)}>Edit</Button>
                         <Button variant='danger' classname='shadow-sm m-1 p-1' onClick={deleteCustomer(customer.id)}>Delete</Button>

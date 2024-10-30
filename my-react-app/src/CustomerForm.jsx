@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import axios from 'axios';
+import {Form} from "react-bootstrap/Form"
+import { Button } from "react-bootstrap/Button";
 
 const CustomerForm = () => {
 
@@ -49,22 +51,28 @@ const CustomerForm = () => {
         else{setErrors(errors);}
     }
     return (
-        <form>
-            <h2>{selectedCustomer ? 'Edit' : 'New'} Customer</h2>
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" ref={customerNameRef}></input>
-            {errors.customerName && <div style={{color:"red"}}>{errors.customerName}</div>}
+        <Form className="border border-danger">
+            <h2 className='text-center'>{selectedCustomer ? 'Edit' : 'New'} Customer</h2>
+            <Form.Group>
+                <Form.Label for="name">Name:</Form.Label>
+                <Form.Control type="text" id="name" name="name" ref={customerNameRef}></Form.Control>
+                {errors.customerName && <div style={{color:"red"}}>{errors.customerName}</div>}
+            </Form.Group>
 
-            <label for="email">Email:</label>
-            <input type="text" id="email" name="email" ref={emailRef}></input>
-            {errors.email && <div style={{color:"red"}}>{errors.email}</div>}
+            <Form.Group>
+                <Form.Label for="email">Email:</Form.Label>
+                <Form.Control type="text" id="email" name="email" ref={emailRef}></Form.Control>
+                {errors.email && <div style={{color:"red"}}>{errors.email}</div>}
+            </Form.Group>
 
-            <label for="telephone">Telephone:</label>
-            <input type="tel" id="telephone" name="telephone" ref={telephoneRef}></input>
-            {errors.telephone && <div style={{color:"red"}}>{errors.telephone}</div>}
+            <Form.Group>
+                <Form.Label for="telephone">Telephone:</Form.Label>
+                <Form.Control type="tel" id="telephone" name="telephone" ref={telephoneRef}></Form.Control>
+                {errors.telephone && <div style={{color:"red"}}>{errors.telephone}</div>}
+            </Form.Group>
 
-            <button onClick={handleSubmission}>Submit</button>
-        </form>
+            <Button className='shadow-sm m-1 p-1' variant="success" onClick={handleSubmission}>Submit</Button>
+        </Form>
     )
 }
 

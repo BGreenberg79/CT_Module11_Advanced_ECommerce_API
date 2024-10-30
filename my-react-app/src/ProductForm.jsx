@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import axios from 'axios';
+import {Form} from 'react-bootstrap/Form';
+import {Button} from 'react-bootstrap/Button'
 
 const ProductForm = () => {
         const productNameRef =useRef(null);
@@ -47,22 +49,28 @@ const ProductForm = () => {
         } catch(error) {console.error("Error submitting product:", error);}} else {setErrors(errors);}}
     
     return (
-        <form>
-            <h2>{selectedProduct ? 'Edit' : 'New'} Product</h2>
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" ref={productNameRef}></input>
-            {errors.productName && <div style={{color:"red"}}>{errors.productName}</div>}
+        <Form>
+            <h2 className='text-center'>{selectedProduct ? 'Edit' : 'New'} Product</h2>
+            <Form.Group>
+                <Form.Label for="name">Name:</Form.Label>
+                <Form.Control type="text" id="name" name="name" ref={productNameRef}></Form.Control>
+                {errors.productName && <div style={{color:"red"}}>{errors.productName}</div>}
+            </Form.Group>
 
-            <label for="product_type">Product Type:</label>
-            <input type="text" id="product_type" name="product_type" ref={productTypeRef}></input>
-            {errors.productType && <div style={{color:"red"}}>{errors.productType}</div>}
+            <Form.Group>
+                <Form.Label for="product_type">Product Type:</Form.Label>
+                <Form.Control type="text" id="product_type" name="product_type" ref={productTypeRef}></Form.Control>
+                {errors.productType && <div style={{color:"red"}}>{errors.productType}</div>}
+            </Form.Group>
 
-            <label for="price">Price:</label>
-            <input type="float" id="price" name="price" ref={productPriceRef}></input>
+            <Form.Group>
+            <Form.Label for="price">Price:</Form.Label>
+            <Form.Control type="float" id="price" name="price" ref={productPriceRef}></Form.Control>
             {errors.productPrice && <div style={{color:"red"}}>{errors.productPrice}</div>}
+            </Form.Group>
 
-            <button onClick={handleSubmission}>Submit</button>
-            </form>
+            <Button variant='success' className='shadow-sm m-1 p-1' onClick={handleSubmission} >Submit</Button>
+        </Form>
     )
 }
 

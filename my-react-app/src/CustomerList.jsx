@@ -1,4 +1,11 @@
 import { useState, useEffect } from 'react';
+import axios from 'axios';
+import {Container} from 'react-bootstrap/Container';
+import {Row} from 'react-bootstrap/Row';
+import {Col} from 'react-bootstrap/Col';
+import {ListGroup} from 'react-bootstrap/ListGroup'
+import {Button} from 'react-bootstrap/Button'
+
 
 const CustomerList = ({ customers, customerId, onEditCustomer, onCustomerDeleted }) => {
     const [customers, setCustomers] = useState([]);
@@ -27,15 +34,21 @@ const CustomerList = ({ customers, customerId, onEditCustomer, onCustomerDeleted
 
     return(
         <div>
-            <h3>Customer List</h3>
-            <ul>
-                {customers.map(customer => (
-                    <li key={customer.id}>Customer ID: {customer.id}, Customer Name:{customer.name} Customer Email: {customer.email}, Telephone: {customer.telephone}
-                    <button onClick={onEditCustomer(customer)}>Edit</button>
-                    <button onClick={deleteCustomer(customer.id)}>Delete</button>
-                    </li>
-                ))}
-            </ul>
+            <Container fluid>
+                <Row className='my-2'>
+                    <Col>
+                        <h3 className='text-center'>Customer List</h3>
+                    </Col>
+                </Row>
+                <ListGroup>
+                    {customers.map(customer => (
+                        <ListGroup.Item variant='info' key={customer.id}>Customer ID: {customer.id}, Customer Name:{customer.name} Customer Email: {customer.email}, Telephone: {customer.telephone}
+                        <Button variant='warning' className='shadow-sm m-1 p-1' onClick={onEditCustomer(customer)}>Edit</Button>
+                        <Button variant='danger' classname='shadow-sm m-1 p-1' onClick={deleteCustomer(customer.id)}>Delete</Button>
+                        </ListGroup.Item>
+                    ))}
+                </ListGroup>
+            </Container>
         </div>
     )
 }

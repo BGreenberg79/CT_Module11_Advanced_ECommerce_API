@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import axios from 'axios';
+import {Form} from "react-bootstrap/Form"
+import { Button } from "react-bootstrap/Button";
 
 const OrderForm = () => {
 
@@ -54,27 +56,35 @@ const OrderForm = () => {
             } catch(error) {console.error("Error submitting order:", error);}} else {setErrors(errors);}}
 
     return (
-        <form>
-            <h2>{selectedOrder ? 'Edit' : 'New'} Order</h2>
-            <label for="customer_id">Customer ID:</label>
-            <input type="int" id="customer_id" name="customer_id" ref={customerIdRef}></input> 
-            {errors.customerId && <div style={{color:"red"}}>{errors.customerId}</div>}
+        <Form>
+            <h2 className='text-center'>{selectedOrder ? 'Edit' : 'New'} Order</h2>
+            <Form.Group>
+                <Form.Label for="customer_id">Customer ID:</Form.Label>
+                <Form.Control type="int" id="customer_id" name="customer_id" ref={customerIdRef}></Form.Control> 
+                {errors.customerId && <div style={{color:"red"}}>{errors.customerId}</div>}
+            </Form.Group>
 
-            <label for="order_status">Order Status:</label>
-            <input type="text" id="order_status" name="order_status" ref={orderStatusRef}></input>
-            {errors.orderStatus && <div style={{color:"red"}}>{errors.orderStatus}</div>}
+            <Form.Group>
+                <Form.Label for="order_status">Order Status:</Form.Label>
+                <Form.Control type="text" id="order_status" name="order_status" ref={orderStatusRef}></Form.Control>
+                {errors.orderStatus && <div style={{color:"red"}}>{errors.orderStatus}</div>}
+            </Form.Group>
 
-            <label for="products">Products:</label>
-            <input type="list" id="products" name="products" ref={productsRef}></input>
-            {errors.products && <div style={{color:"red"}}>{errors.prodcts}</div>}
+            <Form.Group>
+                <Form.Label for="products">Products:</Form.Label>
+                <Form.Control type="list" id="products" name="products" ref={productsRef}></Form.Control>
+                {errors.products && <div style={{color:"red"}}>{errors.prodcts}</div>}
+            </Form.Group>
 
-            <label for="total_price">Total Price:</label>
-            <input type="float" id="total_price" name="total_price" ref={totalPriceRef}></input>
-            {errors.totalPrice && <div style={{color:"red"}}>{errors.totalPrice}</div>}
+            <Form.Group>
+                <Form.Label for="total_price">Total Price:</Form.Label>
+                <Form.Control type="float" id="total_price" name="total_price" ref={totalPriceRef}></Form.Control>
+                {errors.totalPrice && <div style={{color:"red"}}>{errors.totalPrice}</div>}
+            </Form.Group>
 
-            <button onClick={handleSubmission}>Submit</button>
+            <Button className='shadow-sm m-1 p-1' variant='success' onClick={handleSubmission}>Submit</Button>
 
-        </form>
+        </Form>
     )
 }
 

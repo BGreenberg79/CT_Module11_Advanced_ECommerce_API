@@ -7,6 +7,9 @@ import CustomerList from "./CustomerList";
 import { useState } from "react";
 import axios from "axios";
 import { Route, Routes } from 'react-router-dom';
+import NavBar from "./NavBar";
+import Home from "./Home";
+import NotFound from "./NotFound"
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 

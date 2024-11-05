@@ -105,11 +105,11 @@ function App() {
 
       <Routes>
         <Route path="/" element={< Home />}/>
-        <Route path="/customers/:id" element={< CustomerForm />}/>
+        <Route path="/customers/" element={< CustomerForm />}/>
         <Route path='/customers/list/' element={<CustomerList onEditCustomer={handleEditCustomer} onCustomerDeleted={handleCustomerDeleted}/>}/>
-        <Route path='/orders/:id' element={< OrderForm/>}/>
+        <Route path='/orders/' element={< OrderForm/>}/>
         <Route path='/orders/list/' element={<OrderList onEditOrder={handleEditOrder} onOrderDeleted={handleOrderDeleted}/>}/>
-        <Route path="/products/:id" element={<ProductForm/>}/>
+        <Route path="/products/" element={<ProductForm/>}/>
         <Route path='/products/list/' element={<ProductList onEditProduct={handleEditProduct} onProductDeleted={handleProductDeleted}/>}/>
         <Route path='*' element={<NotFound/>}/>
       </Routes>

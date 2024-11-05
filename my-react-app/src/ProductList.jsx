@@ -37,7 +37,7 @@ const ProductList = ({ productId, onEditProduct, onProductDeleted }) => {
     return(
         <div>
             <Container fluid>
-                <Row clasName='my-2'>
+                <Row className='my-2'>
                     <Col>
                         <h3 className='text-center'>Product List</h3>
                     </Col>

@@ -10,13 +10,13 @@ function NavBar() {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id='basic-navbar-nav'>
                     <Nav>
-                        <NavLink to='/' activeClassName="active">Home</NavLink>
-                        <NavLink to='/customers/' activeClassName="active">Customer Form</NavLink>
-                        <NavLink to='/orders/' activeClassName="active">Order Form</NavLink>
-                        <NavLink to='/products/' activeClassName="active">Product Form</NavLink>
-                        <NavLink to='/products/list/' activeClassName="active">Product List</NavLink>
-                        <NavLink to='/orders/list/' activeClassName="active">Order List</NavLink>
-                        <NavLink to='/customers/list/' activeClassName="active">Customer List</NavLink>
+                        <NavLink to='/'>Home</NavLink>
+                        <NavLink to='/customers/'>Customer Form</NavLink>
+                        <NavLink to='/orders/'>Order Form</NavLink>
+                        <NavLink to='/products/'>Product Form</NavLink>
+                        <NavLink to='/products/list/'>Product List</NavLink>
+                        <NavLink to='/orders/list/'>Order List</NavLink>
+                        <NavLink to='/customers/list/'>Customer List</NavLink>
                     </Nav>
                 </Navbar.Collapse>
             </Container>

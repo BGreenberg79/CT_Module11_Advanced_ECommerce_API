@@ -11,7 +11,7 @@ function NavBar() {
                 <Navbar.Collapse id='basic-navbar-nav'>
                     <Nav>
                         <NavLink to='/'>Home</NavLink>
-                        <NavLink to='/customers/'>Customer Form</NavLink>
+                        <NavLink to='/customer/create/'>Customer Form</NavLink>
                         <NavLink to='/orders/'>Order Form</NavLink>
                         <NavLink to='/products/'>Product Form</NavLink>
                         <NavLink to='/products/list/'>Product List</NavLink>

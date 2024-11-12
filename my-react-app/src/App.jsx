@@ -17,11 +17,11 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 function App() {
   // const [products, setProducts] = useState([]);
-  const [selectedProduct, setSelectedProduct] = useState([]);
+  // const [selectedProduct, setSelectedProduct] = useState([]);
   // const [orders, setOrders] = useState([]);
-  const [selectedOrder, setSelectedOrder] =useState([]);
+  // const [selectedOrder, setSelectedOrder] =useState([]);
   // const [customers, setCustomers] =useState([]);
-  const [selectedCustomer, setSelectedCustomer] = useState([]);
+  // const [selectedCustomer, setSelectedCustomer] = useState([]);
 
   // useEffect(() =>{
   //   fetchProducts();
@@ -59,17 +59,17 @@ function App() {
     
   // } 
 
-  const handleEditProduct = (product) => {
-    setSelectedProduct(product);
-  };
+  // const handleEditProduct = (product) => {
+  //   setSelectedProduct(product);
+  // };
 
-  const handleEditCustomer = (customer) => {
-    setSelectedCustomer(customer);
-  }
+  // const handleEditCustomer = (customer) => {
+  //   setSelectedCustomer(customer);
+  // }
 
-  const handleEditOrder = (order) => {
-    setSelectedOrder(order);
-  }
+  // const handleEditOrder = (order) => {
+  //   setSelectedOrder(order);
+  // }
 
   // const handleProductUpdated = () => {
   //   fetchProducts();
@@ -86,17 +86,17 @@ function App() {
   //   setSelectedOrder(null);
   // };
 
-  const handleProductDeleted = () => {
-    fetchProducts();
-  }
+  // const handleProductDeleted = () => {
+  //   fetchProducts();
+  // }
 
-  const handleOrderDeleted = () => {
-    fetchOrders();
-  }
+  // const handleOrderDeleted = () => {
+  //   fetchOrders();
+  // }
 
-  const handleCustomerDeleted = () => {
-    fetchCustomers();
-  }
+  // const handleCustomerDeleted = () => {
+  //   fetchCustomers();
+  // }
 
   return (
     <>
@@ -105,13 +105,20 @@ function App() {
 
       <Routes>
         <Route path="/" element={< Home />}/>
-        <Route path="/customers/" element={< CustomerForm />}/>
-        <Route path='/customers/list/' element={<CustomerList onEditCustomer={handleEditCustomer} onCustomerDeleted={handleCustomerDeleted}/>}/>
-        <Route path='/orders/' element={< OrderForm/>}/>
-        <Route path='/orders/list/' element={<OrderList onEditOrder={handleEditOrder} onOrderDeleted={handleOrderDeleted}/>}/>
-        <Route path="/products/" element={<ProductForm/>}/>
-        <Route path='/products/list/' element={<ProductList onEditProduct={handleEditProduct} onProductDeleted={handleProductDeleted}/>}/>
-        <Route path='*' element={<NotFound/>}/>
+        {/* Create customer */}
+        <Route path="/customer/create/" element={< CustomerForm />}/>
+
+        {/* Edit customer - take in a paramter id from the url */}
+        <Route path="/customer/edit/:id" element={< CustomerForm />}/>
+
+        {/* List customers */}
+        <Route path='/customers/list/' element={<CustomerList/>}/>
+        {/* <Route path='/customers/list/' element={<CustomerList onEditCustomer={handleEditCustomer} onCustomerDeleted={handleCustomerDeleted}/>}/> */}
+        {/* <Route path='/orders/' element={< OrderForm/>}/> */}
+        {/* <Route path='/orders/list/' element={<OrderList onEditOrder={handleEditOrder} onOrderDeleted={handleOrderDeleted}/>}/> */}
+        {/* <Route path="/products/" element={<ProductForm/>}/> */}
+        {/* <Route path='/products/list/' element={<ProductList onEditProduct={handleEditProduct} onProductDeleted={handleProductDeleted}/>}/> */}
+        {/* <Route path='*' element={<NotFound/>}/> */}
       </Routes>
     </>
   )

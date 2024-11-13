@@ -5,18 +5,18 @@ import  Navbar from "react-bootstrap/Navbar";
 
 function NavBar() {
     return(
-        <Navbar expand="md" className="bg-success">
+        <Navbar expand="md" bg="success" data-bs-theme="success">
             <Container>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id='basic-navbar-nav'>
                     <Nav>
-                        <NavLink to='/'>Home</NavLink>
-                        <NavLink to='/customer/create/'>Customer Form</NavLink>
-                        <NavLink to='/orders/create/'>Order Form</NavLink>
-                        <NavLink to='/products/create/'>Product Form</NavLink>
-                        <NavLink to='/products/list/'>Product List</NavLink>
-                        <NavLink to='/orders/list/'>Order List</NavLink>
-                        <NavLink to='/customers/list/'>Customer List</NavLink>
+                        <NavLink className="mx-2 text-light text-decoration-none" to='/'>Home</NavLink>
+                        <NavLink className="mx-2 text-light text-decoration-none" to='/customer/create/'>Customer Form</NavLink>
+                        <NavLink className="mx-2 text-light text-decoration-none" to='/orders/create/'>Order Form</NavLink>
+                        <NavLink className="mx-2 text-light text-decoration-none" to='/products/create/'>Product Form</NavLink>
+                        <NavLink className="mx-2 text-light text-decoration-none" to='/products/list/'>Product List</NavLink>
+                        <NavLink className="mx-2 text-light text-decoration-none" to='/orders/list/'>Order List</NavLink>
+                        <NavLink className="mx-2 text-light text-decoration-none" to='/customers/list/'>Customer List</NavLink>
                     </Nav>
                 </Navbar.Collapse>
             </Container>

@@ -12,8 +12,10 @@ const OrderForm = () => {
     const [date, setDate] = useState("");
     const [customerId, setCustomerId] = useState("");
     const [orderStatus, setOrderStatus] = useState("");
-    // const [products, setProducts] = useState("");
-    const [totalPrice, setTotalPrice] = useState("");
+    // note from kate: added this back in
+    const [productsID, setProductsId] = useState([]);
+    // const [products, setProducts] = useState([]);
+    // const [totalPrice, setTotalPrice] = useState("");
     const [errors, setErrors] = useState({});
     const [successMessage, setSuccessMessage] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
@@ -36,16 +38,26 @@ const OrderForm = () => {
             setDate(selectedOrder.date); 
             setCustomerId(selectedOrder.customer_id);
             setOrderStatus(selectedOrder.order_status); 
-            // setProducts(selectedOrder.products);
-            setTotalPrice(selectedOrder.total_price); 
 
-        } else {
-            setDate("");
-            setCustomerId("");
-            setOrderStatus("");
-            // setProducts("");
-            setTotalPrice("");
-        }
+            // Map out selectedOrder.products and append each of their ids to the new array
+            // once the new array is an array of product IDs, setProductID(newArr)
+
+            let newArr = [] 
+            selectedOrder.products.map(product => newArr.push(product.product_id))
+
+            setProductsId(newArr);
+            // setTotalPrice(selectedOrder.total_price); 
+
+        } 
+        
+        // Note from Kate: I think we can get rid of this else statement since the form is automatically resetting the state when it is reloaded 
+        // else {
+        //     setDate("");
+        //     setCustomerId("");
+        //     setOrderStatus("");
+        //     setProductsId([]);
+        //     // setTotalPrice("");
+        // }
     }, [selectedOrder]);
 
     const validateForm = () => {
@@ -54,8 +66,8 @@ const OrderForm = () => {
         if (!date) errors.date = 'Date required for order';
         if (!customerId) errors.customerId = 'Customer Id required for order';
         if (!orderStatus) errors.orderStatus = 'Order Status required for order';
-        // if (!products) errors.products = 'Products required for order';
-        if(!totalPrice) errors.totalPrice = 'Total price required for order';
+        // added this back in 
+        if (!productsID) errors.products = 'Products required for order';
 
         return errors;
     };
@@ -69,22 +81,26 @@ const OrderForm = () => {
                 "date": date, 
                 "customer_id": customerId, 
                 "order_status": orderStatus,
-                // "products": products,
-                "total_price": totalPrice 
+                "products": productsID
             };
+
+            console.log(orderData);
 
             try {
                 if (selectedOrder) {
+                    console.log("Selected")
                     // Update existing customer
                     await axios.put(`http://127.0.0.1:5000/orders/${selectedOrder.order_id}`, orderData);
                 } else {
                     // Create new customer
                     await axios.post('http://127.0.0.1:5000/orders', orderData);
+
+                    // Clear form after submission
                     setDate("");
                     setCustomerId("");
                     setOrderStatus("");
-                    // setProducts("");
-                    setTotalPrice("");
+                    setProductsId([]);
+                    // setTotalPrice("");
                 }
 
                 setSuccessMessage('Order submitted successfully');
@@ -138,17 +154,40 @@ const OrderForm = () => {
                     {errors.orderStatus && <div style={{ color: "red" }}>{errors.orderStatus}</div>}
                 </Form.Group>
 
-                {/* <Form.Group>
-                    <Form.Label>Products:</Form.Label>
-                    <Form.Control
-                        type="text"
-                        value={products}
-                        onChange={(e) => setProducts(e.target.value)}
-                    />
-                    {errors.products && <div style={{ color: "red" }}>{errors.products}</div>}
-                </Form.Group> */}
 
-                <Form.Group>
+                { selectedOrder ? (
+                    <>
+                        <Form.Group>
+                        <Form.Label>Products:</Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={productsID.join(", ")} // Display the array as a comma-separated string
+                            onChange={(e) => setProductsId(e.target.value.split(",").map(id => id.trim()))}
+                        />
+                        {errors.products && <div style={{ color: "red" }}>{errors.products}</div>}
+                        </Form.Group>
+
+                    </>
+                ) : (
+                    <>
+                        <Form.Group>
+                        <Form.Label>Products:</Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={productsID.join(", ")} // Display the array as a comma-separated string
+                            onChange={(e) => setProductsId(e.target.value.split(",").map(id => id.trim()))}
+                        />
+                        {errors.products && <div style={{ color: "red" }}>{errors.products}</div>}
+                        </Form.Group>
+                    </>
+                )
+
+
+                }
+
+
+
+                {/* <Form.Group>
                     <Form.Label>Total Price:</Form.Label>
                     <Form.Control
                         type="number"
@@ -156,7 +195,7 @@ const OrderForm = () => {
                         onChange={(e) => setTotalPrice(e.target.value)}
                     />
                     {errors.totalPrice && <div style={{ color: "red" }}>{errors.totalPrice}</div>}
-                </Form.Group>
+                </Form.Group> */}
 
                 <Button className='shadow-sm m-1 p-1' variant="success" onClick={handleSubmission}>Submit</Button>
             </Form>

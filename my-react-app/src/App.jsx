@@ -122,7 +122,6 @@ function App() {
 
         {/* edit product */}
         <Route path="/products/edit/:id" element={< ProductForm />}/>
-        {/* TODO - edit product route */}
 
         {/* list products */}
         <Route path="/products/list/" element={< ProductList />}/>

@@ -1,91 +1,167 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
+import { useParams } from 'react-router-dom';
+
 
 const OrderForm = () => {
+    const { id } = useParams();
+    const [selectedOrder, setSelectedOrder] = useState(null);
+    const [date, setDate] = useState("");
+    const [customerId, setCustomerId] = useState("");
+    const [orderStatus, setOrderStatus] = useState("");
+    // const [products, setProducts] = useState("");
+    const [totalPrice, setTotalPrice] = useState("");
+    const [errors, setErrors] = useState({});
+    const [successMessage, setSuccessMessage] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);
 
-        const customerIdRef =useRef(null);
-        const orderStatusRef= useRef(null);
-        const productsRef = useRef(null);
-        const totalPriceRef=useRef(null);
-        const [errors, setErrors] =useState ({});
-
-        const [customerId, setCustomerId] = useState();
-        const [orderStatus, setOrderStatus] = useState();
-        const [products, setProducts] = useState();
-        const [totalPrice, setTotalPrice] = useState();
-
-        useEffect(() => {
-            if (selectedOrder) {
-                setCustomerId(selectedOrder.customerId);
-                setOrderStatus(selectedOrder.orderStatus);
-                setProducts(selectedOrder.products);
-                setTotalPrice(selectedOrder.totalPrice);
-            }
-        }, [selectedOrder]);
-
-        const validateForm = () => {
-            const errors ={};
-            customerId= customerIdRef.current.value;
-            orderStatus= orderStatusRef.current.value;
-            products= productsRef.current.value;
-            totalPrice=totalPriceRef.current.value;
-            if (!customerId) errors.customerId= 'Customer required for order';
-            if (!orderStatus) errors.orderStatus ='Order Status required for order';
-            if (!products) errors.products = 'Products required for order';
-            if (!totalPrice || price <= 0) errors.totalPrice = 'Total Price must be greater than $0';
-            return errors
+    useEffect(() => {
+        if (id) {
+            axios.get(`http://127.0.0.1:5000/orders/${id}`)
+                .then(response => {
+                    setSelectedOrder(response.data);
+                })
+                .catch(error => {
+                    console.error('Error fetching order data:', error);
+                    setErrorMessage('Failed to load order data');
+                });
         }
+    }, [id]);
 
-        const handleSubmission = async (event) =>{
-            event.preventDefault();
-            const errors= validateForm();
-            if (Object.keys(errors).length == 0){
-            const orderData = {customerId, orderStatus, products, totalPrice};
-            try{
+    useEffect(() => {
+        if (selectedOrder) {
+            setDate(selectedOrder.date); 
+            setCustomerId(selectedOrder.customer_id);
+            setOrderStatus(selectedOrder.order_status); 
+            // setProducts(selectedOrder.products);
+            setTotalPrice(selectedOrder.total_price); 
+
+        } else {
+            setDate("");
+            setCustomerId("");
+            setOrderStatus("");
+            // setProducts("");
+            setTotalPrice("");
+        }
+    }, [selectedOrder]);
+
+    const validateForm = () => {
+        const errors = {};
+
+        if (!date) errors.date = 'Date required for order';
+        if (!customerId) errors.customerId = 'Customer Id required for order';
+        if (!orderStatus) errors.orderStatus = 'Order Status required for order';
+        // if (!products) errors.products = 'Products required for order';
+        if(!totalPrice) errors.totalPrice = 'Total price required for order';
+
+        return errors;
+    };
+
+    const handleSubmission = async (event) => {
+        event.preventDefault();
+        const errors = validateForm();
+
+        if (Object.keys(errors).length === 0) {
+            const orderData = { 
+                "date": date, 
+                "customer_id": customerId, 
+                "order_status": orderStatus,
+                // "products": products,
+                "total_price": totalPrice 
+            };
+
+            try {
                 if (selectedOrder) {
-                    await axios.put(`http://127.0.0.1:5000/orders/${selectedOrder.id}`, orderData);
-                } else
-                    {await axios.post('http://127.0.0.1:5000/orders', orderData);
-            } onOrderUpdated();
-            setCustomerId('');
-            setOrderStatus('');
-            setProducts('');
-            setTotalPrice('');
-            } catch(error) {console.error("Error submitting order:", error);}} else {setErrors(errors);}}
+                    // Update existing customer
+                    await axios.put(`http://127.0.0.1:5000/orders/${selectedOrder.order_id}`, orderData);
+                } else {
+                    // Create new customer
+                    await axios.post('http://127.0.0.1:5000/orders', orderData);
+                    setDate("");
+                    setCustomerId("");
+                    setOrderStatus("");
+                    // setProducts("");
+                    setTotalPrice("");
+                }
 
+                setSuccessMessage('Order submitted successfully');
+                setErrorMessage(null);
+            } catch (error) {
+                console.error("Error submitting order:", error);
+                setErrorMessage('Error submitting order');
+                setSuccessMessage(null);
+            }
+        } else {
+            setErrors(errors);
+        }
+    };
+
+  
     return (
-        <Form>
-            <h2 className='text-center'>{selectedOrder ? 'Edit' : 'New'} Order</h2>
-            <Form.Group>
-                <Form.Label for="customer_id">Customer ID:</Form.Label>
-                <Form.Control type="int" id="customer_id" name="customer_id" ref={customerIdRef}></Form.Control> 
-                {errors.customerId && <div style={{color:"red"}}>{errors.customerId}</div>}
-            </Form.Group>
+    <div>
+            {successMessage && <Alert variant="success" onClose={() => setSuccessMessage(null)} dismissible>{successMessage}</Alert>}
+            {errorMessage && <Alert variant="danger" onClose={() => setErrorMessage(null)} dismissible>{errorMessage}</Alert>}
 
-            <Form.Group>
-                <Form.Label for="order_status">Order Status:</Form.Label>
-                <Form.Control type="text" id="order_status" name="order_status" ref={orderStatusRef}></Form.Control>
-                {errors.orderStatus && <div style={{color:"red"}}>{errors.orderStatus}</div>}
-            </Form.Group>
+            <Form className="border border-danger">
+                <h2 className='text-center'>{selectedOrder ? 'Edit' : 'New'} Order</h2>
+                
+                <Form.Group>
+                    <Form.Label>Date:</Form.Label>
+                    <Form.Control
+                        type="date"
+                        value={date}
+                        onChange={(e) => setDate(e.target.value)}
+                    />
+                    {errors.date && <div style={{ color: "red" }}>{errors.date}</div>}
+                </Form.Group>
 
-            <Form.Group>
-                <Form.Label for="products">Products:</Form.Label>
-                <Form.Control type="list" id="products" name="products" ref={productsRef}></Form.Control>
-                {errors.products && <div style={{color:"red"}}>{errors.prodcts}</div>}
-            </Form.Group>
+                <Form.Group>
+                    <Form.Label>Customer Id:</Form.Label>
+                    <Form.Control
+                        type="number"
+                        value={customerId}
+                        onChange={(e) => setCustomerId(e.target.value)}
+                    />
+                    {errors.customerId && <div style={{ color: "red" }}>{errors.customerId}</div>}
+                </Form.Group>
 
-            <Form.Group>
-                <Form.Label for="total_price">Total Price:</Form.Label>
-                <Form.Control type="float" id="total_price" name="total_price" ref={totalPriceRef}></Form.Control>
-                {errors.totalPrice && <div style={{color:"red"}}>{errors.totalPrice}</div>}
-            </Form.Group>
+                <Form.Group>
+                    <Form.Label>Order Status:</Form.Label>
+                    <Form.Control
+                        type="text"
+                        value={orderStatus}
+                        onChange={(e) => setOrderStatus(e.target.value)}
+                    />
+                    {errors.orderStatus && <div style={{ color: "red" }}>{errors.orderStatus}</div>}
+                </Form.Group>
 
-            <Button className='shadow-sm m-1 p-1' variant='success' onClick={handleSubmission}>Submit</Button>
+                {/* <Form.Group>
+                    <Form.Label>Products:</Form.Label>
+                    <Form.Control
+                        type="text"
+                        value={products}
+                        onChange={(e) => setProducts(e.target.value)}
+                    />
+                    {errors.products && <div style={{ color: "red" }}>{errors.products}</div>}
+                </Form.Group> */}
 
-        </Form>
-    )
+                <Form.Group>
+                    <Form.Label>Total Price:</Form.Label>
+                    <Form.Control
+                        type="number"
+                        value={totalPrice}
+                        onChange={(e) => setTotalPrice(e.target.value)}
+                    />
+                    {errors.totalPrice && <div style={{ color: "red" }}>{errors.totalPrice}</div>}
+                </Form.Group>
+
+                <Button className='shadow-sm m-1 p-1' variant="success" onClick={handleSubmission}>Submit</Button>
+            </Form>
+    </div>
+  )
 }
 
 export default OrderForm

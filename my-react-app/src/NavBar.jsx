@@ -12,8 +12,8 @@ function NavBar() {
                     <Nav>
                         <NavLink to='/'>Home</NavLink>
                         <NavLink to='/customer/create/'>Customer Form</NavLink>
-                        <NavLink to='/orders/'>Order Form</NavLink>
-                        <NavLink to='/products/'>Product Form</NavLink>
+                        <NavLink to='/orders/create/'>Order Form</NavLink>
+                        <NavLink to='/products/create/'>Product Form</NavLink>
                         <NavLink to='/products/list/'>Product List</NavLink>
                         <NavLink to='/orders/list/'>Order List</NavLink>
                         <NavLink to='/customers/list/'>Customer List</NavLink>

@@ -5,9 +5,11 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup'
 import Button from 'react-bootstrap/Button';
+import { useNavigate } from 'react-router-dom';
 
-const OrderList = ({ orderId, onEditOrder, onOrderDeleted }) => {
+const OrderList = () => {
     const [ordersList, setOrdersList] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchOrders = async () =>{
@@ -17,20 +19,27 @@ const OrderList = ({ orderId, onEditOrder, onOrderDeleted }) => {
             } catch (error) {
                 console.error('Error fetching orders', error)
             }
-        }
-        if (orderId) {
-            fetchOrders()
-        }
-    }, [orderId])
+        };
+        
+            fetchOrders();
+    }, []);
 
     const deleteOrder = async (id) =>{
         try {
             await axios.delete(`http://127.0.0.1:5000/orders/${id}`)
-            onOrderDeleted();
-        } catch{ console.error('Error deleting order:', error)
-
+            setOrdersList((prevList) => prevList.filter((order) => order.order_id !== id));
+        } catch (error) {
+             console.error('Error deleting order:', error);
         }
-    }
+    };
+
+    const editOrder = (order) => {
+        if (order.order_id) {
+            navigate(`/order/edit/${order.order_id}`);
+        } else {
+            console.error('Error editing order:', error);
+        }
+    };
 
     return(
         <div>
@@ -40,13 +49,19 @@ const OrderList = ({ orderId, onEditOrder, onOrderDeleted }) => {
                         <h3 className='text-center'>Order List</h3>
                     </Col>
                 </Row>
-            <ListGroup>
-                {ordersList.map(order => (
-                    <ListGroup.Item variant='info' key={order.id}>Order ID: {order.id}, Customer ID:{order.customer_id} Order Status: {order.order_status}, Products: {order.products}, Total Price: {order.total_price}
-                    <Button variant='warning' className='shadow-sm m-1 p-1' onClick={onEditOrder(order)}>Edit</Button>
-                    <Button variant='danger' className='shadow-sm m-1 p-1' onClick={deleteOrder(order.id)}>Delete</Button></ListGroup.Item>
-                ))}
-            </ListGroup>
+                <ListGroup>
+                    {ordersList.map(order => (
+                        <ListGroup.Item variant='info' key={order.order_id}>
+                            Order ID: {order.order_id}, Customer ID:{order.customer_id} Order Status: {order.order_status}, Total Price: {order.total_price}
+                            <Button variant='warning' className='shadow-sm m-1 p-1' onClick={() => editOrder(order)}>
+                                Edit
+                            </Button>
+                            <Button variant='danger' className='shadow-sm m-1 p-1' onClick={() => deleteOrder(order.order_id)}>
+                                Delete
+                            </Button>
+                        </ListGroup.Item>
+                    ))}
+                </ListGroup>
             </Container>
         </div>
     )

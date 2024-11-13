@@ -3,12 +3,15 @@ import axios from 'axios';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import ListGroup from 'react-bootstrap/ListGroup'
-import Button from 'react-bootstrap/Button'
+import ListGroup from 'react-bootstrap/ListGroup';
+import Button from 'react-bootstrap/Button';
+import { useNavigate } from 'react-router-dom';
 
 
-const ProductList = ({ productId, onEditProduct, onProductDeleted }) => {
+
+const ProductList = () => {
     const [productsList, setProductsList] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchProducts = async () =>{
@@ -19,10 +22,17 @@ const ProductList = ({ productId, onEditProduct, onProductDeleted }) => {
                 console.error('Error fetching products', error)
             }
         }
-        if (productId) {
-            fetchProducts()
-        }
-    }, [productId])
+
+        fetchProducts()
+        
+    }, [])
+
+    const editProduct = (product) => {
+    if (product.product_id) {
+        navigate(`/products/edit/${product.product_id}`)
+    } else { 
+        console.error('Error editing product:', error);}
+    };
 
     const deleteProduct = async (id) =>{
         try {
@@ -32,6 +42,9 @@ const ProductList = ({ productId, onEditProduct, onProductDeleted }) => {
 
         }
     }
+
+    // on edit function 
+    // TODO: add useNavigate into this page to navigate user to product form 
 
 
     return(
@@ -44,9 +57,15 @@ const ProductList = ({ productId, onEditProduct, onProductDeleted }) => {
                 </Row>
                 <ListGroup>
                     {productsList.map(product => (
-                        <ListGroup.Item variant='info' key={product.id}>Product ID: {product.id}, Product Name:{prodct.name} Product Type: {product.product_type}, Price: {product.price}
-                        <Button variant='warning' className='shadow-sm m-1 p-1' onClick={()=>onEditProduct(product)}>Edit</Button>
-                        <Button variant='danger' className='shadow-sm m-1 p-1'  onClick={()=>deleteProduct(product.id)}>Delete</Button></ListGroup.Item>
+                    <ListGroup.Item variant='info' key={product.product_id}>
+                            Product ID: {product.product_id}, Product Name:{product.name} Product Type: {product.product_type}, Price: {product.price}
+                        <Button variant='warning' className='shadow-sm m-1 p-1' onClick={() => editProduct(product)}>
+                            Edit
+                        </Button>
+                        <Button variant='danger' className='shadow-sm m-1 p-1'  onClick={() => deleteProduct(product.product_id)}>
+                            Delete
+                        </Button>
+                    </ListGroup.Item>
                     ))}
                 </ListGroup>
             </Container>

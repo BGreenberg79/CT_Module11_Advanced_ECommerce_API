@@ -5,10 +5,12 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
+// ADDED 
 import { useNavigate } from 'react-router-dom';
 
 const CustomerList = () => {
     const [customersList, setCustomersList] = useState([]);
+    // ADDED 
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -33,6 +35,7 @@ const CustomerList = () => {
         }
     };
 
+    // ADDED 
     const editCustomer = (customer) => {
         if (customer.customer_id) {
             navigate(`/customer/edit/${customer.customer_id}`);

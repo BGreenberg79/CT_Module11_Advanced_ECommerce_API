@@ -105,6 +105,8 @@ function App() {
 
       <Routes>
         <Route path="/" element={< Home />}/>
+
+        {/* === CUSTOMERS === */}
         {/* Create customer */}
         <Route path="/customer/create/" element={< CustomerForm />}/>
 
@@ -113,12 +115,30 @@ function App() {
 
         {/* List customers */}
         <Route path='/customers/list/' element={<CustomerList/>}/>
-        {/* <Route path='/customers/list/' element={<CustomerList onEditCustomer={handleEditCustomer} onCustomerDeleted={handleCustomerDeleted}/>}/> */}
-        {/* <Route path='/orders/' element={< OrderForm/>}/> */}
-        {/* <Route path='/orders/list/' element={<OrderList onEditOrder={handleEditOrder} onOrderDeleted={handleOrderDeleted}/>}/> */}
-        {/* <Route path="/products/" element={<ProductForm/>}/> */}
-        {/* <Route path='/products/list/' element={<ProductList onEditProduct={handleEditProduct} onProductDeleted={handleProductDeleted}/>}/> */}
-        {/* <Route path='*' element={<NotFound/>}/> */}
+
+        {/* === PRODUCTS === */}
+        {/* Create product */}
+        <Route path="/products/create/" element={<ProductForm/>}/>
+
+        {/* edit product */}
+        <Route path="/products/edit/:id" element={< ProductForm />}/>
+        {/* TODO - edit product route */}
+
+        {/* list products */}
+        <Route path="/products/list/" element={< ProductList />}/>
+
+
+        {/* === ORDERS === */}
+        {/* Create Order */}
+        <Route path="/orders/create/" element={< OrderForm />}/>
+
+        {/* Edit Order */}
+        <Route path="/orders/edit/:id" element={< OrderForm />}/>
+
+        {/* list orders */}
+        <Route path="/orders/list/" element={< OrderList />}/>
+
+        <Route path='*' element={<NotFound/>}/>
       </Routes>
     </>
   )
